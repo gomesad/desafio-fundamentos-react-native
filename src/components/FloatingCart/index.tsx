@@ -20,26 +20,31 @@ import { useCart } from '../../hooks/cart';
 
 const FloatingCart: React.FC = () => {
   const { products } = useCart();
-
   const navigation = useNavigation();
 
   const cartTotal = useMemo(() => {
     // TODO RETURN THE SUM OF THE PRICE FROM ALL ITEMS IN THE CART
-
-    return formatValue(0);
+    const unformattedTotal = products.reduce(
+      (total, curr) => total + curr.quantity * curr.price,
+      0,
+    );
+    console.log(unformattedTotal); //eslint-disable-line
+    console.log(formatValue(unformattedTotal)); //eslint-disable-line
+    return formatValue(unformattedTotal);
   }, [products]);
 
   const totalItensInCart = useMemo(() => {
     // TODO RETURN THE SUM OF THE QUANTITY OF THE PRODUCTS IN THE CART
-
-    return 0;
+    const teste = products.reduce((total, curr) => total + curr.quantity, 0);
+    console.log(teste); //eslint-disable-line
+    return teste;
   }, [products]);
 
   return (
     <Container>
       <CartButton
         testID="navigate-to-cart-button"
-        onPress={() => navigation.navigate('Cart')}
+        onPress={() => products.length && navigation.navigate('Cart')}
       >
         <FeatherIcon name="shopping-cart" size={24} color="#fff" />
         <CartButtonText>{`${totalItensInCart} itens`}</CartButtonText>
